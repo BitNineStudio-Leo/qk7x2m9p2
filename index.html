@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lista nascita per Elia</title>
+  <meta name="description" content="La lista nascita del piccolo Elia, fatta con tanto amore.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🦖</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Fredoka:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="panel hero">
+    <img class="art balloons" src="assets/art/elefante.webp" alt="">
+    <img class="art baby" src="assets/art/bimbo.webp" alt="Elia, illustrazione di un bimbo con i ricci">
+    <img class="art diapers" src="assets/art/pannolini.webp" alt="">
+    <img class="art pacifier" src="assets/art/ciuccio.webp" alt="">
+    <img class="art dino" src="assets/art/dino.webp" alt="">
+    <div class="hero-text">
+      <p class="kicker outline">Per il piccolo</p>
+      <h1 class="name outline">Elia</h1>
+      <p class="tagline outline">fatta con tanto amore</p>
+    </div>
+  </header>
+
+  <main id="lista" aria-live="polite"></main>
+
+  <section class="panel info">
+    <h2 class="big">Informazioni</h2>
+    <div class="info-cols">
+      <div class="info-col">
+        <span class="num">01</span>
+        <div>
+          <h3>Sogno del bambino Forlì</h3>
+          <p>Via Pelacano 12/a</p>
+          <p>Tel. <a href="tel:+390543029034">0543 29034</a><br>Cell. <a href="tel:+393667203726">366 7203726</a></p>
+          <p>Per i regali del negozio puoi fare un bonifico o pagare con Satispay.</p>
+          <p class="iban-row"><span>IBAN</span> <code id="iban">IT80O0538713200000003622509</code>
+            <button type="button" class="copy" id="copy-iban">Copia</button></p>
+        </div>
+      </div>
+      <div class="info-col">
+        <span class="num">02</span>
+        <div>
+          <h3>Amazon</h3>
+          <p>Gli altri regali sono nella lista desideri Amazon.</p>
+          <p><a id="amazon-link" class="btn" href="#" target="_blank" rel="noopener">Apri la lista su Amazon</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="panel thanks">
+    <h2 class="big">Grazie di cuore</h2>
+    <p class="tagline outline">per tutto il vostro amore</p>
+  </footer>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
