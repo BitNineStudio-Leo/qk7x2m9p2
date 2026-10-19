@@ -4,7 +4,9 @@
     sogno:  { nome: "Sogno del bambino", logo: "assets/art/logo-sogno.webp" },
     amazon: { nome: "Amazon",            logo: "assets/art/logo-amazon.webp" }
   };
-  const SI = ["si", "sì", "x", "true", "vero", "1", "yes", "regalato"];
+  const SI = ["si", "x", "true", "vero", "1", "yes", "regalato", "ok"];
+  // "sì", "Sì", "SI", " si " ecc. valgono tutti come regalato
+  const isGifted = v => SI.includes((v || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim().toLowerCase());
 
   // Lettore CSV minimo (gestisce virgolette e virgole dentro i campi)
   function parseCSV(text) {
@@ -57,8 +59,11 @@
   }
 
   function card(p) {
-    const gifted = SI.includes((p.regalato || "").toLowerCase());
-    const c = el("article", "card" + (gifted ? " gifted" : ""));
+    const gifted = isGifted(p.regalato);
+    // Link: quello del singolo prodotto (colonna "link"); per Amazon, in mancanza, la lista desideri
+    const href = gifted ? "" : (p.link || (p.negozio === "amazon" ? CFG.amazonWishlist : "") || "");
+    const c = el(href ? "a" : "article", "card" + (gifted ? " gifted" : "") + (href ? " linkable" : ""));
+    if (href) { c.href = href; c.target = "_blank"; c.rel = "noopener"; }
     const wrap = el("div", "card-img");
     const img = el("img"); img.src = p.immagine; img.alt = p.nome; img.loading = "lazy";
     wrap.appendChild(img);
@@ -66,6 +71,7 @@
     c.appendChild(wrap);
     c.appendChild(el("h4", "card-name", p.nome));
     if (p.prezzo) c.appendChild(el("p", "card-price", p.prezzo + " €"));
+    if (href) c.appendChild(el("p", "card-cta", p.link ? "Vedi il prodotto →" : (p.negozio === "amazon" ? "Vedi su Amazon →" : "")));
     return c;
   }
 
@@ -79,8 +85,10 @@
     }
     // Negozi e categorie nell'ordine in cui compaiono nel foglio
     const shops = new Map();
+    const amazonItems = items.filter(p => p.negozio === "amazon");
     for (const p of items) {
-      if (hide && SI.includes((p.regalato || "").toLowerCase())) continue;
+      if (p.negozio === "amazon") continue;
+      if (hide && isGifted(p.regalato)) continue;
       if (!shops.has(p.negozio)) shops.set(p.negozio, new Map());
       const cats = shops.get(p.negozio);
       if (!cats.has(p.categoria)) cats.set(p.categoria, []);
@@ -116,9 +124,38 @@
       }
       root.appendChild(sec);
     }
-    // Link Amazon
-    const az = document.getElementById("amazon-link");
-    if (az && CFG.amazonWishlist) az.href = CFG.amazonWishlist;
+    if (amazonItems.length) root.appendChild(amazonSection(amazonItems));
+  }
+
+  // Sezione Amazon: testo, pulsante e carosello di idee (solo immagini, non cliccabili)
+  function amazonSection(list) {
+    const panel = el("section", "panel amazon"); panel.id = "amazon";
+    const logo = el("img", "shop-logo"); logo.src = NEGOZI.amazon.logo; logo.alt = "Amazon";
+    panel.appendChild(logo);
+    panel.appendChild(el("h2", "big small", "Altri regali su Amazon"));
+    panel.appendChild(el("p", "amazon-text",
+      "Abbiamo anche una lista nascita su Amazon. Ecco qualche idea: tutta la lista, sempre aggiornata, la trovi qui."));
+    if (CFG.amazonWishlist) {
+      const a = el("a", "btn", "Apri la lista su Amazon");
+      a.href = CFG.amazonWishlist; a.target = "_blank"; a.rel = "noopener";
+      panel.appendChild(a);
+    }
+    const car = el("div", "carousel");
+    const prev = el("button", "nav prev", "‹"); prev.type = "button"; prev.setAttribute("aria-label", "Precedenti");
+    const next = el("button", "nav next", "›"); next.type = "button"; next.setAttribute("aria-label", "Successivi");
+    const track = el("div", "track");
+    list.forEach(p => {
+      const f = el("figure", "slide");
+      const img = el("img"); img.src = p.immagine; img.alt = p.nome; img.loading = "lazy";
+      f.append(img, el("figcaption", "", p.nome));
+      track.appendChild(f);
+    });
+    const step = dir => track.scrollBy({ left: dir * track.clientWidth * 0.8, behavior: "smooth" });
+    prev.addEventListener("click", () => step(-1));
+    next.addEventListener("click", () => step(1));
+    car.append(prev, track, next);
+    panel.appendChild(car);
+    return panel;
   }
 
   const copyBtn = document.getElementById("copy-iban");

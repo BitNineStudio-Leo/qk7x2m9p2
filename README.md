@@ -1,4 +1,4 @@
-# Lista nascita
+# Lista nascita per Elia
 
 Sito statico (HTML + CSS + JS). I regali stanno in `prodotti.csv`, che puoi
 importare in Google Sheets: da lì segni cosa è stato regalato.

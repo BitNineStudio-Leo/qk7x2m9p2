@@ -6,8 +6,8 @@ window.CONFIG = {
 
   // Cosa fare con i regali già fatti: "grigio" (restano visibili, sbiaditi,
   // con la scritta "Già regalato") oppure "nascondi" (spariscono).
-  regalati: "grigio",
+  regalati: "nascondi",
 
-  // Lista desideri Amazon (controlla che il link sia identico a quello del PDF)
-  amazonWishlist: "https://www.amazon.it/hz/wishlist/ls/289L41JJ8SZNY?ref_=wl_share"
+  // Lista nascita su Amazon
+  amazonWishlist: "https://www.amazon.it/baby-reg/matteo-leoni-novembre-2026-forli/3EASPNDM27O48"
 };
