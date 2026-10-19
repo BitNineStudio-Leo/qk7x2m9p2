@@ -1,7 +1,8 @@
 (function () {
   const CFG = window.CONFIG || {};
   const NEGOZI = {
-    sogno:  { nome: "Sogno del bambino", logo: "assets/art/logo-sogno.webp" },
+    sogno:  { nome: "Sogno del bambino", logo: "assets/art/logo-sogno.webp",
+              cell: { tel: "+393667203726", wa: "393667203726", mostra: "366 7203726" } },
     amazon: { nome: "Amazon",            logo: "assets/art/logo-amazon.webp" }
   };
   const SI = ["si", "x", "true", "vero", "1", "yes", "regalato", "ok"];
@@ -107,6 +108,17 @@
       const nav = el("nav", "pills");
       if (info.logo) { const l = el("img", "shop-logo"); l.src = info.logo; l.alt = info.nome; nav.appendChild(l); }
       nav.appendChild(el("p", "shop-name", info.nome));
+      if (info.cell) {
+        const box = el("div", "shop-contact");
+        box.appendChild(el("p", "", "Cell. " + info.cell.mostra));
+        box.appendChild(el("p", "", "Puoi verificare cosa è ancora disponibile anche su WhatsApp"));
+        const btns = el("div", "contact-btns");
+        const call = el("a", "btn", "Chiama"); call.href = "tel:" + info.cell.tel;
+        const wa = el("a", "btn", "WhatsApp");
+        wa.href = "https://wa.me/" + info.cell.wa + "?text=" + encodeURIComponent("Ciao! Vorrei sapere cosa è ancora disponibile nella lista nascita di Elia.");
+        wa.target = "_blank"; wa.rel = "noopener";
+        btns.append(call, wa); box.appendChild(btns); nav.appendChild(box);
+      }
       for (const cat of cats.keys()) {
         const a = el("a", "pill", cat); a.href = "#" + slug(key + "-" + cat);
         nav.appendChild(a);
