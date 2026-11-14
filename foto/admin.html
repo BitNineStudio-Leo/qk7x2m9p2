@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://api.github.com; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>Album di Elia · Gestione</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📷</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Fredoka:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="foto.css">
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body class="admin">
+
+  <header class="panel admin-head">
+    <h1 class="big small">Gestione album</h1>
+    <p>Le foto vengono ridimensionate, ripulite dai dati di posizione e <strong>cifrate su questo dispositivo</strong> prima di essere caricate. Su GitHub arrivano solo file illeggibili.</p>
+  </header>
+
+  <!-- Collegamento -->
+  <section class="panel" id="connect">
+    <h2 class="pill label">Accedi</h2>
+    <form id="connect-form" class="admin-form" autocomplete="on">
+      <input type="text" name="username" value="album-elia" autocomplete="username" hidden>
+      <label class="field"><span>Password dell'album</span>
+        <input id="a-password" type="password" autocomplete="current-password" autocapitalize="off" required></label>
+      <label class="field"><span>Token GitHub (vedi istruzioni nel README)</span>
+        <input id="a-token" type="password" autocomplete="off" spellcheck="false" placeholder="github_pat_…" required></label>
+      <label class="check"><input id="a-remember" type="checkbox"> Ricorda il token su questo dispositivo</label>
+      <button class="btn" type="submit" id="connect-btn">Entra</button>
+      <p class="msg" id="connect-msg" role="alert"></p>
+    </form>
+  </section>
+
+  <!-- Prima configurazione -->
+  <section class="panel" id="setup" hidden>
+    <h2 class="pill label">Prima configurazione</h2>
+    <form id="setup-form" class="admin-form">
+      <p>L'album non esiste ancora. Scegli la password da dare ai parenti: usa una frase lunga e facile da ricordare (es. <em>elia-dorme-sul-divano-della-nonna</em>). Più è lunga, più l'album è al sicuro.</p>
+      <label class="field"><span>Password per la famiglia</span>
+        <input id="s-pass1" type="password" autocomplete="new-password" minlength="12" required></label>
+      <label class="field"><span>Ripeti la password</span>
+        <input id="s-pass2" type="password" autocomplete="new-password" minlength="12" required></label>
+      <button class="btn" type="submit" id="setup-btn">Crea l'album</button>
+      <p class="msg" id="setup-msg" role="alert"></p>
+    </form>
+  </section>
+
+  <div id="manage" hidden>
+    <!-- Carica -->
+    <section class="panel">
+      <h2 class="pill label">Carica nuove foto</h2>
+      <label class="drop" id="drop">
+        <input id="files" type="file" accept="image/*" multiple>
+        <span class="drop-icon">📷</span>
+        <span>Tocca per scegliere le foto<br><small>oppure trascinale qui</small></span>
+      </label>
+      <div class="pending" id="pending"></div>
+      <div class="actions" id="upload-actions" hidden>
+        <button class="btn" type="button" id="upload-btn">Carica le foto</button>
+        <button class="btn ghost" type="button" id="clear-btn">Annulla</button>
+      </div>
+      <p class="msg" id="upload-msg" role="status"></p>
+    </section>
+
+    <!-- Foto già pubblicate -->
+    <section class="panel">
+      <h2 class="pill label">Foto nell'album <span id="count"></span></h2>
+      <div class="existing" id="existing"></div>
+      <div class="actions" id="save-actions" hidden>
+        <button class="btn" type="button" id="save-btn">Salva le modifiche</button>
+        <button class="btn ghost" type="button" id="reset-btn">Annulla modifiche</button>
+      </div>
+      <p class="msg" id="save-msg" role="status"></p>
+    </section>
+
+    <!-- Cambia password -->
+    <section class="panel">
+      <h2 class="pill label">Cambia password</h2>
+      <form id="pw-form" class="admin-form">
+        <p>Tutte le foto vengono cifrate di nuovo con una chiave nuova: chi aveva la vecchia password (anche sui dispositivi "ricordati") non vedrà più le foto finché non riceve quella nuova.</p>
+        <label class="field"><span>Nuova password</span>
+          <input id="pw1" type="password" autocomplete="new-password" minlength="12" required></label>
+        <label class="field"><span>Ripeti la nuova password</span>
+          <input id="pw2" type="password" autocomplete="new-password" minlength="12" required></label>
+        <button class="btn" type="submit" id="pw-btn">Cambia password</button>
+        <p class="msg" id="pw-msg" role="status"></p>
+      </form>
+    </section>
+
+    <div class="album-bar">
+      <a class="btn ghost" href="./">Vai all'album</a>
+      <button class="btn ghost" type="button" id="disconnect">Esci</button>
+    </div>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="crypto.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>
