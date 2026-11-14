@@ -57,7 +57,7 @@
   function showLogin(msg) {
     $("album").hidden = true; $("album-bar").hidden = true; $("login").hidden = false;
     $("login-msg").textContent = msg || "";
-    setTimeout(() => $("password").focus(), 50);
+    setTimeout(() => $("password").focus({ preventScroll: true }), 50);
   }
 
   async function loadIndex() {
