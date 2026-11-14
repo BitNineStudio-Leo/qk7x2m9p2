@@ -52,9 +52,13 @@
     return opts.raw ? r.arrayBuffer() : r.status === 204 ? null : r.json();
   }
   const dataPath = name => CFG.dataPath + "/" + name;
+  // Legge un file binario. L'API "contents" in formato raw tratta i file come
+  // testo e altera i byte, quindi prendo lo sha del file e scarico il blob git.
   async function readFile(name) {
-    try { return await api("/contents/" + dataPath(name) + "?ref=" + encodeURIComponent(CFG.branch), { raw: true }); }
+    let meta;
+    try { meta = await api("/contents/" + dataPath(name) + "?ref=" + encodeURIComponent(CFG.branch)); }
     catch (e) { if (e.status === 404) return null; throw e; }
+    return api("/git/blobs/" + meta.sha, { raw: true });
   }
   async function createBlob(bytes) {
     const res = await api("/git/blobs", { method: "POST", body: { content: C.toB64(bytes), encoding: "base64" } });
