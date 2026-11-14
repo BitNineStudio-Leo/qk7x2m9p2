@@ -97,6 +97,7 @@ body.veiled .photo{filter:blur(28px) brightness(1.1); transition:none}
 .hero.no-baby .small-title{left:50%}
 .hero.no-baby .diapers{left:12%; top:36%}
 @media (max-width:820px){
-  .hero.no-baby{min-height:300px}
+  .hero.no-baby{min-height:250px}
   .hero.no-baby .hero-text{left:0; top:50%; bottom:auto; transform:translateY(-50%)}
 }
+@media (min-width:821px){ .hero.no-baby .hero-text{top:31%} }
